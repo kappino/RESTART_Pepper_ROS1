@@ -7,7 +7,8 @@ from pepper import Pepper
 import yaml
 import os
 
-IP = "169.254.115.62"
+#IP = "169.254.115.62"
+IP = "localhost"
 PORT = 9559
 BEHAVIOUR_RULES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "behavior_rules.yaml")
 map_emotion = {
@@ -24,8 +25,8 @@ class controller():
         with open(BEHAVIOUR_RULES, 'r') as file:
             self.behavior = yaml.safe_load(file)
         if self.session_robot is None:
-            #exit("Pepper is not online")
-            print("Pepper is not online")
+            exit("Pepper is not online")
+            #print("Pepper is not online")
         self.pub_terapia_attiva = rospy.Publisher('terapia_attiva', Bool, queue_size=10, latch=True)
         rospy.sleep(2)
         rospy.Subscriber('performance', String, self.start_action)
@@ -36,9 +37,15 @@ class controller():
         print("performance ricevuto")
         performance = data.data
         self.pub_terapia_attiva.publish(True)
-        msg = rospy.wait_for_message("emotion", String, timeout=None)
-        emotion = msg.data
-        print(self.behavior[emotion][performance])
+        #msg = rospy.wait_for_message("emotion", String, timeout=None)
+        #emotion = msg.data
+        emotion = "NEUTRAL"  
+        #print(self.behavior[emotion][performance])
+        config = {
+            'bodyLanguageMode': 'contextual',
+        }
+        self.session_robot.pepper_animated_say(self.behavior[emotion][performance]['phrases'][0],config)
+        
 
     
 

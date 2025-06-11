@@ -13,9 +13,11 @@ class Pepper:
         self.session = session
         self.robot_posture = self.session.service("ALRobotPosture")
         self.motion = self.session.service("ALMotion")
-        self.video_recorder = self.session.service("ALVideoRecorder")
-        self.audio_recorder = self.session.service("ALAudioRecorder")
+        #COMMENTATO PER LAVORARE CON SIMULATORE!!!
+        #self.video_recorder = self.session.service("ALVideoRecorder")
+        #self.audio_recorder = self.session.service("ALAudioRecorder")
         self.text_to_speech = self.session.service("ALTextToSpeech")
+        self.animated_speech = self.session.service("ALAnimatedSpeech")
         self.memory = self.session.service("ALMemory")
         self.leds = self.session.service("ALLeds")
 
@@ -164,6 +166,8 @@ class Pepper:
 
     def pepper_say(self, sentence):
         self.text_to_speech.say(sentence)
+    def pepper_animated_say(self, sentence, config):
+        self.animated_speech.say(sentence, config)
 
     # Imposta i LED degli occhi su un colore RGB (in percentuale da 0.0 a 1.0)
     def set_eye_color(self, hex_color, duration=1.0):
