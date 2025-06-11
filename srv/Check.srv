@@ -1,0 +1,3 @@
+# Request (input del service)
+---
+bool is_available  # Response (output del service)
