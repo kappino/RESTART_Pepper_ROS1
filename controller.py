@@ -40,10 +40,7 @@ class controller():
         emotion = msg.data
         print(self.behavior[emotion][performance])
 
-    def gesto_approvante_con_braccia(self):
-        '''
-        
-        '''
+    
 
 
     

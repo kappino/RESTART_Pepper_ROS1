@@ -1,0 +1,82 @@
+
+NEUTRAL:
+  HIGH:
+    phrases:
+      - "Hai ottenuto un'ottima performance. È un risultato solido. Adesso è ora di provare qualcosa di un po’ più sfidante?"
+      - "Stai andando molto bene: i tuoi risultati sono sopra la media. Ora possiamo approfondire ancora un po’ gli esercizi. Continua così"
+      - "Le tue risposte sono precise e corrette, vuol dire che stai lavorando con grande efficacia. Andiamo avanti così."
+    eye_color: "Azzurro"
+    gesture: "Gesto approvante con braccia "
+    voice_tone: 0.9
+
+  MEDIUM:
+    phrases:
+      - "Stai lavorando con costanza e i risultati si mantengono stabili. Ora proviamo provare insieme qualche piccolo esercizio in più per vedere se riusciamo a fare un passo avanti."
+      - "La tua performance è a un buon punto di partenza. Con un po’ di esercizio in più, possiamo raggiungere risultati ancora migliori."
+      - "Va tutto bene finora. Adesso, proviamo qualcosa di leggermente diverso per alzare un po’ l’asticella."
+    eye_color: "Azzurro"
+    gesture: "Corpo stabile e mani vicino al tronco "
+    voice_tone: 0.8
+  LOW:
+    phrases:
+      - "Alcuni esercizi possono risultare più impegnativi, e va bene così. Adesso possiamo provare con un'attività diversa e vedere come va."
+      - "Stai affrontando l'esercizio con impegno, e questo è molto importante. Ora ci sposteremo su un’altra attività. Non mollare!"
+      - "Capita che certe attività richiedano un po’ più di tempo. Andiamo avanti e vedrai che sarai un pò alla volta più coinvolto."
+    eye_color: "Azzurro"
+    gesture: "Gesti semplici"
+    voice_tone: 0.7
+
+POSITIVE:
+  HIGH:
+    phrases:
+      - "Ottimo lavoro! I tuoi risultati sono eccellenti e il tuo entusiasmo è contagioso. Pronto per una nuova sfida?"
+      - "Stai andando davvero forte, sia nei risultati che nell’atteggiamento. Continuiamo così: sei in un ottimo momento!"
+      - "Mi piace vedere con quanta energia affronti gli esercizi. Le tue performance sono davvero alte: ora alziamo un po’ il livello e consolidiamo i traguardi raggiunti?"
+    eye_color: "Verde"
+    gesture: "Postura aperta"
+    voice_tone: 0.9
+
+  MEDIUM:
+    phrases:
+      - "Mi fa piacere vedere che affronti così questa attività! I tuoi risultati sono buoni e, con questo spirito, potresti migliorare ancora di più."
+      - "Ottima energia! Il tuo atteggiamento positivo è una risorsa importante. Andiamo avanti così!"
+      - "I tuoi risultati sono stabili, e questo è un buon punto di partenza per crescere ancora."
+    eye_color: "Verde"
+    gesture: "Braccia rilassate, movimento del capo positivo"
+    voice_tone: 0.85
+
+  LOW:
+    phrases:
+      - "Non preoccuparti per i risultati di oggi, il tuo atteggiamento è la base giusta per migliorare passo dopo passo."
+      - "Il tuo spirito è incoraggiante. I risultati verranno col tempo. Con questo atteggiamento possiamo lavorare insieme per progredire."
+      - "Il tuo approccio è un punto di forza! Anche se gli esercizi di oggi sono stati più difficili, possiamo affrontarli con calma e vedere come migliorarli insieme."
+    eye_color: "Verde"
+    gesture: "Braccia aperte"
+    voice_tone: 0.85
+
+NEGATIVE:
+  HIGH:
+    phrases:
+      - "Hai ottenuto un risultato davvero ottimo. Questo dimostra una grande capacità. A volte le sfide più difficili sono quelle che riescono meglio! Sono qui se hai bisogno di fare tutto con calma."
+      - "Anche in un momento difficile, sei riuscito a mantenere un alto livello di performance. È un segno di forza e determinazione. Ora continuiamo per raggiungere altri risultati."
+      - "I tuoi risultati parlano chiaro: stai lavorando molto bene. Stai dando il meglio per te stesso, affronta i prossimi passi con calma e manterrai gli stessi risultati."
+    eye_color: "Grigio"
+    gesture: "Chinato leggermente in avanti"
+    voice_tone: 0.75
+
+  MEDIUM:
+    phrases:
+      - "Capisco che oggi non ti senti al massimo, ma il tuo impegno sta dando risultati: stai lavorando bene. Possiamo affrontare insieme il prossimo passo con calma."
+      - "Anche nei giorni più difficili, riuscire a mantenere questa performance è un segnale importante. Se hai bisogno, possiamo rallentare un po’ o fare una pausa."
+      - "Hai ottenuto risultati stabili nonostante il momento non facile. È un segno di forza. Proviamo a continuare insieme, senza fretta."
+    eye_color: "Grigio"
+    gesture: "Postura non minacciosa, con riduzione dei movimenti"
+    voice_tone: 0.7
+  LOW:
+    phrases:
+      - "Oggi sembra una giornata un po’ difficile, e va bene così. Proviamo ad andare insieme avanti e vediamo cosa riusciamo a fare."
+      - "Capita a tutti di avere momenti in cui le cose sembrano più complicate. L’importante è che non sei solo: ci sono qui io per aiutarti, un passo alla volta."
+      - "Non preoccuparti per i risultati di oggi. Sicuramente andrà meglio. Ora l’importante è affrontare il lavoro successivo con calma, lo faremo insieme."
+    eye_color: "Grigio"
+    gesture: "Chinarsi con piccoli gesti motivanti"
+    voice_tone: 0.6
