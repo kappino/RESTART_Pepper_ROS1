@@ -7,7 +7,7 @@ import subprocess
 import re
 import os
 
-PATH_EEG_EMOTIV = "/home/eeg_data"
+PATH_EEG_EMOTIV = os.path.join(os.path.dirname(os.path.abspath(__file__)), "EEG_processing/")
 
 class EEG_get():
     def __init__(self):

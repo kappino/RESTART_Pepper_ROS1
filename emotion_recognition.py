@@ -5,10 +5,17 @@ from std_msgs.msg import String
 from care_er_ave.msg import audioVideo, audio_video_eeg
 import re
 import subprocess
+import os
 
-PATH_MODEL_AUDIO_VIDEO = "/home/CARE-ER-AVE/audio_video_emotion_recognition_model/"
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+EEG_AV_MODEL_DIR = os.path.join(CURRENT_DIR, "ER_models/eeg_av/")
+PATH_MODEL_AUDIO_VIDEO = os.path.join(EEG_AV_MODEL_DIR, "audio_video_emotion_recognition_model/")
+PATH_MODEL_EEG = os.path.join(EEG_AV_MODEL_DIR, "EEG_model/")
+PATH_META_MODEL = os.path.join(EEG_AV_MODEL_DIR, "Meta_model/")
+
+'''PATH_MODEL_AUDIO_VIDEO = "/home/CARE-ER-AVE/audio_video_emotion_recognition_model/"
 PATH_MODEL_EEG = "/home/CARE-ER-AVE/EEG_model/"
-PATH_META_MODEL = "/home/CARE-ER-AVE/Meta_model/"
+PATH_META_MODEL = "/home/CARE-ER-AVE/Meta_model/"'''
 
 class emotion_recognition():
     def __init__(self):
@@ -49,7 +56,7 @@ class emotion_recognition():
         emotion = self.run_model(path_model=path_model, cwd=cwd)
         if emotion:
             print(emotion)
-        self.pub_emotion(emotion)
+            self.pub_emotion.publish(emotion)
 
     def run_model_eeg(self, data):
         eeg_path = data.data
@@ -58,7 +65,7 @@ class emotion_recognition():
         emotion = self.run_model(path_model=path_model, cwd=cwd)
         if emotion:
             print(emotion)
-        self.pub_emotion(emotion)
+            self.pub_emotion.publish(emotion)
 
     def run_meta_model(self, data):
         eeg_path = data.eeg
@@ -69,7 +76,7 @@ class emotion_recognition():
         emotion = self.run_model(path_model=path_model, cwd=cwd)
         if emotion:
             print(emotion)
-        self.pub_emotion(emotion)
+            self.pub_emotion.publish(emotion)
 
 if __name__ == '__main__':
     er = emotion_recognition()
