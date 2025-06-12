@@ -8,7 +8,7 @@ import yaml
 import os
 
 #IP = "169.254.115.62"
-IP = "localhost"
+IP = "host.docker.internal"
 PORT = 9559
 BEHAVIOUR_RULES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "behavior_rules.yaml")
 map_emotion = {

@@ -20,6 +20,7 @@ class Pepper:
         self.animated_speech = self.session.service("ALAnimatedSpeech")
         self.memory = self.session.service("ALMemory")
         self.leds = self.session.service("ALLeds")
+        self.sr = self.session.service("ALSpeechRecognition")
 
         self.joints = {
             'head': ['HeadYaw', 'HeadPitch'],
@@ -43,7 +44,7 @@ class Pepper:
                 print("[INFO] Connessione riuscita.")
                 cls._instance = cls(session)
             except RuntimeError as e:
-                print("[ERROR] Connessione fallita.")
+                print("[ERROR] Connessione fallita.",e)
                 return None
         return cls._instance
     

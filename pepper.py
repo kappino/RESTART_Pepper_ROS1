@@ -13,8 +13,8 @@ class Pepper:
         self.session = session
         self.robot_posture = self.session.service("ALRobotPosture")
         self.motion = self.session.service("ALMotion")
-        self.video_recorder = self.session.service("ALVideoRecorder")
-        self.audio_recorder = self.session.service("ALAudioRecorder")
+        #self.video_recorder = self.session.service("ALVideoRecorder")
+        #self.audio_recorder = self.session.service("ALAudioRecorder")
         self.text_to_speech = self.session.service("ALTextToSpeech")
         self.memory = self.session.service("ALMemory")
         self.leds = self.session.service("ALLeds")
@@ -41,7 +41,7 @@ class Pepper:
                 print("[INFO] Connessione riuscita.")
                 cls._instance = cls(session)
             except RuntimeError as e:
-                print("[ERROR] Connessione fallita.")
+                print("[ERROR] Connessione fallita.",e)
                 return None
         return cls._instance
     
