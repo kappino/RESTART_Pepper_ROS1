@@ -20,7 +20,7 @@ class Pepper:
         self.animated_speech = self.session.service("ALAnimatedSpeech")
         self.memory = self.session.service("ALMemory")
         self.leds = self.session.service("ALLeds")
-        self.sr = self.session.service("ALSpeechRecognition")
+        #self.sr = self.session.service("ALSpeechRecognition")
 
         self.joints = {
             'head': ['HeadYaw', 'HeadPitch'],

@@ -4,6 +4,7 @@
 import rospy
 from std_msgs.msg import String, Bool, Int32
 from care_er_ave.msg import audioVideo, audio_video_eeg
+from care_er_ave.srv import Check
 import random
 import threading
 
@@ -28,49 +29,40 @@ class broker_node():
         rospy.loginfo("messaggio ricevuto")
         if data.data:
             try:
-                mag = rospy.wait_for_message("verify_av", Bool, timeout = 10)
-                self.av_flag = mag.data
-                rospy.loginfo(self.av_flag)
-            except rospy.ROSException:
-                
+                # Aspetta che il service sia disponibile (timeout 10s)
+                rospy.wait_for_service('check_av_service', timeout=10)
+                check_av = rospy.ServiceProxy('check_av_service', Check)
+                resp = check_av()  # Invia una richiesta vuota
+                self.av_flag = resp.is_available
+            except (rospy.ServiceException, rospy.ROSException) as e:
+                rospy.logwarn("AV Service non disponibile: %s", str(e))
                 self.av_flag = False
-        
+            
             try:
-                msg = rospy.wait_for_message("verify_eeg", Bool, timeout = 10)
-                self.eeg_flag = msg.data
-            except rospy.ROSException:
-                
+                # Aspetta che il service sia disponibile (timeout 10s)
+                rospy.wait_for_service('check_eeg_service', timeout=10)
+                check_eeg = rospy.ServiceProxy('check_eeg_service', Check)
+                resp = check_eeg()  # Invia una richiesta vuota
+                self.eeg_flag = resp.is_available
+            except (rospy.ServiceException, rospy.ROSException) as e:
+                rospy.logwarn("EEG Service non disponibile: %s", str(e))
                 self.eeg_flag = False
+
+            
             if not self.av_flag and not self.eeg_flag:
                 exit()
             
             elif self.av_flag and not self.eeg_flag: #av è disponibile mentre eeg no
-               
                 self.pub_av = rospy.Publisher("av", audioVideo, queue_size=10)
-                # Avvia thread per work_only_av
-                if self.av_thread is None or not self.av_thread.is_alive():
-                    self.av_thread = threading.Thread(target=self.work_only_av)
-                    self.av_thread.daemon = True  # Thread termina se il main thread termina
-                    self.av_thread.start()
-                    rospy.loginfo("Thread work_only_av avviato")
+                self.work_only_av()
             
             elif self.eeg_flag and not self.av_flag: #eeg disponibile mentre av no
                 self.pub_eeg = rospy.Publisher("eeg", String, queue_size=10)
-
-                if self.eeg_thread is None or not self.eeg_thread.is_alive():
-                    self.eeg_thread = threading.Thread(target=self.work_only_eeg)
-                    self.eeg_thread.daemon = True  # Thread termina se il main thread termina
-                    self.eeg_thread.start()
-                    rospy.loginfo("Thread work_only_eeg avviato")
+                self.work_only_eeg()
             
             elif self.av_flag and self.eeg_flag: #entrambi disponibili
                 self.pub_av_eeg = rospy.Publisher("av_eeg", audio_video_eeg, queue_size=10)
-               
-                if self.av_eeg_thread is None or not self.av_eeg_thread.is_alive():
-                    self.av_eeg_thread = threading.Thread(target=self.work_eeg_av)
-                    self.av_eeg_thread.daemon = True  # Thread termina se il main thread termina
-                    self.av_eeg_thread.start()
-                    rospy.loginfo("Thread work_av_eeg avviato")
+                self.work_eeg_av()
 
     def work_only_eeg(self):
         while True:
@@ -88,6 +80,7 @@ class broker_node():
             #print(msg_av)
             self.pub_av.publish(msg_av)
             self.index += 1
+            rospy.sleep(1)
 
     def work_eeg_av(self):
         msg_av_eeg = audio_video_eeg()
@@ -95,12 +88,11 @@ class broker_node():
             self.send_index.publish(self.index)
             eeg_path = rospy.wait_for_message("path_eeg", String, timeout=None)
             msg_av_eeg.eeg = eeg_path.data
-            rospy.sleep(2)
             msg_av = rospy.wait_for_message("path_av", audioVideo, timeout=None)
-            rospy.sleep(2)
             msg_av_eeg.video_path = msg_av.video_path
             msg_av_eeg.audio_path = msg_av.audio_path
             self.pub_av_eeg.publish(msg_av_eeg)
+            rospy.sleep(1)
             self.index+=1
 
 
