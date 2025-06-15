@@ -18,11 +18,6 @@ class broker_node():
         self.eeg_flag = False
         self.index = 0
         
-        # Threads
-        self.av_thread = None
-        self.eeg_thread = None
-        self.av_eeg_thread = None
-
         rospy.Subscriber('terapia_attiva', Bool, self.attiva_terapia)
         
     def attiva_terapia(self, data):

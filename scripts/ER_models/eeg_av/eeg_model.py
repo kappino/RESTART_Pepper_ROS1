@@ -6,7 +6,7 @@ from eeg_input_preprocess import preprocess_data
 NUM_CLASSES = 4
 IN_CHANNELS=4
 GRID_SIZE=(9,9)
-BEST_MODEL = os.path.join(os.path.dirname(os.path.abspath(__file__), "results/best_state.pth"))
+BEST_MODEL = os.path.join(os.path.dirname(os.path.abspath(__file__)), "weights/eeg_best_state.pth")
 
 LOGITS_TO_LABEL = {
     0: "Neutral",

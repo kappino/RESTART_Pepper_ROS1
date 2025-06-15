@@ -7,8 +7,8 @@ from audio_video_preprocessing import preprocessing_audio_video
 N_CLASSES = 4
 SAMPLE_DURATION = 15
 NUM_HEADS = 1
-BEST_MODEL_CPU = os.path.join(os.path.dirname(os.path.abspath(__file__), "results/RAVDESS_multimodalcnn_15_best_cpu.pth"))
-BEST_MODEL_GPU = os.path.join(os.path.dirname(os.path.abspath(__file__), "results/RAVDESS_multimodalcnn_15_best.pth"))
+BEST_MODEL_CPU = os.path.join(os.path.dirname(os.path.abspath(__file__)), "weights/RAVDESS_multimodalcnn_15_best_cpu.pth")
+BEST_MODEL_GPU = os.path.join(os.path.dirname(os.path.abspath(__file__)), "weights/RAVDESS_multimodalcnn_15_best.pth")
 VIDEO_NORM_VALUE = 255
 
 LOGITS_TO_LABEL = {
@@ -49,6 +49,9 @@ class audio_video_model():
         
         
         audio_var, video_var = preprocessing_audio_video(video_path,audio_path,video_norm_value=VIDEO_NORM_VALUE, batch_size=1)
+
+        if video_var is None:
+            return None
         
         with torch.no_grad():
             output = self.model(x_audio=audio_var, x_visual=video_var)

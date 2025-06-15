@@ -11,7 +11,7 @@ import numpy as np
 from moviepy.editor import VideoFileClip
 import torch
 from facenet_pytorch import MTCNN
-from utils import transforms
+from utils_av import transforms
 import random
 
 video_extension = ["mp4", "avi", "mkv"]
@@ -99,7 +99,11 @@ class Video_preprocessing():
             im = im[y1:y2, x1:x2, :]
             im = cv2.resize(im, (224,224))
             numpy_video.append(im)
-        if len(frames_to_select) > 0:
+        #QUESTA L'HO AGGIUNTA IO
+        if len(numpy_video) == 0:
+            return None
+        # --------
+        elif len(frames_to_select) > 0:
             for i in range(len(frames_to_select)):
                 numpy_video.append(np.zeros((224,224,3), dtype=np.uint8))
         return np.array(numpy_video)
@@ -134,6 +138,10 @@ def preprocess_frame(frame, input_size=(224, 224), video_norm_value=None):
 
 def preprocessing_audio_video(video_path, audio_path=None, video_norm_value=None, batch_size=1):
     video_npy = Video_preprocessing(video_path).process()
+    #QUESTA L'HO AGGIUNRA IO
+    if video_npy is None:
+        return None, None
+    # ------
     if audio_path is None:
         audio_npy,sr = Audio_preprocessing(video_path).process()
     else:
