@@ -1,15 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
 import sys
-sys.path.append("./ER_models/eeg_av") 
+import os
+META_MODEL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ER_models/eeg_av/")
+sys.path.append(META_MODEL_PATH)
 import rospy
 from std_msgs.msg import String
 from care_er_ave.msg import audioVideo, audio_video_eeg
-import re
-import subprocess
-import os
 from meta_model import meta_model
+
+
 
 class emotion_recognition():
     def __init__(self):
@@ -29,11 +31,13 @@ class emotion_recognition():
         audio_path = data.audio_path
         emotion = self.meta_model.av.predict(video_path, audio_path)
         if emotion:
+            print("AV: ", emotion)
             self.pub_emotion.publish(emotion)
 
     def run_model_eeg(self,data):
          eeg_path = data.data
-         emotion = self.eeg.predict(eeg_path)
+         emotion = self.meta_model.eeg.predict(eeg_path)
+         print("EEG: ", emotion)
          self.pub_emotion.publish(emotion)
 
     def run_meta_model(self, data):
@@ -42,6 +46,7 @@ class emotion_recognition():
         audio_path = data.audio_path
         emotion = self.meta_model.predict(video_path, eeg_path, audio_path)
         if emotion:
+            print("META_MODEL: ", emotion)
             self.pub_emotion.publish(emotion)
 
 

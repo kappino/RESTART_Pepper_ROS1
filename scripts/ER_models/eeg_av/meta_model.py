@@ -11,7 +11,12 @@ from eeg_input_preprocess import preprocess_data
 PATH_WEIGHTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "weights/Complete_model.pth")
 VIDEO_NORM_VALUE = 255
 
-
+LOGITS_TO_LABEL = {
+    0: "Neutral",
+    1: "Happy",
+    2: "Angry",
+    3: "Sad"
+}
 class meta_model():
     def __init__(self):
         if torch.cuda.is_available():
@@ -37,14 +42,13 @@ class meta_model():
         video_path = video_path
         if audio_path:
             audio_path = audio_path
-        
-       
         audio_data, video_data = preprocessing_audio_video(video_path,audio_path,video_norm_value=VIDEO_NORM_VALUE, batch_size=1)
         if video_data is None:
             return None
         eeg_data = preprocess_data(eeg_path).to(self.device)
+        eeg_data = eeg_data.unsqueeze(0)
 
         emotion = self.meta_model.forward(audio_data=audio_data, video_data=video_data, eeg_data=eeg_data)
-
+        emotion = LOGITS_TO_LABEL[emotion[0]]
         return emotion
 

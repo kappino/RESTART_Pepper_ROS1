@@ -63,6 +63,7 @@ class broker_node():
         while True:
             self.send_index.publish(self.index)
             msg_eeg = rospy.wait_for_message("path_eeg", String, timeout=None)
+            print(msg_eeg)
             self.pub_eeg.publish(msg_eeg)
             self.index += 1
             rospy.sleep(1)
@@ -72,7 +73,7 @@ class broker_node():
         while True:
             self.send_index.publish(self.index)
             msg_av = rospy.wait_for_message("path_av", audioVideo, timeout=None)
-            #print(msg_av)
+            print(msg_av)
             self.pub_av.publish(msg_av)
             self.index += 1
             rospy.sleep(1)
