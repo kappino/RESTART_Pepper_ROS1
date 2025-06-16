@@ -11,12 +11,7 @@ import os
 IP = "172.31.144.1"
 PORT = 9559
 BEHAVIOUR_RULES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "behavior_rules.yaml")
-map_emotion = {
-    "neutral": "neutral",
-    "happy" : "positive",
-    "angry" : "negative",
-    "sad" : "negative"
-}
+
 
 class controller():
     def __init__(self):
