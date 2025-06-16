@@ -10,6 +10,7 @@ import threading
 
 class broker_node():
     def __init__(self):
+        rospy.init_node('broker_eeg_av', anonymous=True)
         self.send_index = rospy.Publisher("index", Int32, queue_size=10)
         rospy.sleep(3)
     
@@ -19,6 +20,7 @@ class broker_node():
         self.index = 0
         
         rospy.Subscriber('terapia_attiva', Bool, self.attiva_terapia)
+        rospy.loginfo("Node 'broker_eeg_av' has been initialized.")
         
     def attiva_terapia(self, data):
         rospy.loginfo("messaggio ricevuto")
@@ -95,8 +97,6 @@ class broker_node():
             
 if __name__ == '__main__':
     try:
-        rospy.init_node('broker_eeg_av', anonymous=True)
-        rospy.loginfo("Node 'broker_eeg_av' has been initialized.")
         av_get = broker_node()
         rospy.spin()
     except rospy.ROSInterruptException:
