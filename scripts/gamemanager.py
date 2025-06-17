@@ -3,13 +3,16 @@
 
 import rospy
 from std_msgs.msg import String
-from pepper_connection import Pepper
+from pepper import Pepper
 from memory_game import MemoryGame  # Altri giochi da importare se servono
+
+IP = "host.docker.internal"
+PORT = 9559
 
 class GameManager:
     def __init__(self):
         rospy.init_node("game_manager")
-        self.pepper = Pepper.create(IP="127.0.0.1", PORT=9559)
+        self.pepper = Pepper.create(IP, PORT)
 
         if not self.pepper:
             rospy.logerr("Connessione con Pepper fallita. Arresto.")

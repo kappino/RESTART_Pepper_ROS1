@@ -59,12 +59,12 @@ class controller():
     def try_all_gestures(self):
         for emotion in emotions:
             for performance in performances:
-                print(f"Trying gesture for emotion: {emotion}, performance: {performance}")
+                print("Trying gesture for emotion: {emotion}, performance: {performance}")
                 config = {
                     'bodyLanguageMode': 'contextual',
                 }
                 for phrase in self.behavior[emotion][performance]['phrases']:
-                    print(f"Phrase: {phrase}")
+                    print("Phrase: {phrase}")
                     self.session_robot.pepper_animated_say(phrase, config)
         print("All gestures tried successfully.")
     
