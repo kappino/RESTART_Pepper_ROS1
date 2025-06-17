@@ -11,9 +11,9 @@ NEUTRAL:
 
   MEDIUM:
     phrases:
-      - "^start(Animation/Dialog animations/Affirmation/Pepper/FasterGatherBothHandsOnChest_LeanRight_01)Stai lavorando con costanza e i risultati si mantengono stabili. Ora proviamo provare insieme qualche piccolo esercizio in più per vedere se riusciamo a fare un passo avanti."
-      - "^start(Animation/Dialog animations/Affirmation/Pepper/FasterGatherBothHandsOnChest_LeanRight_01)La tua performance è a un buon punto di partenza. Con un po’ di esercizio in più, possiamo raggiungere risultati ancora migliori."
-      - "^start(Animation/Moods/Pepper/Neutral/Chill)Va tutto bene finora. Adesso, proviamo qualcosa di leggermente diverso per alzare un po’ l’asticella."
+      - "^start(Animation/Dialog animations/Affirmation/Pepper/FastGatherBothHandsOnChest_LeanRight_01)Stai lavorando con costanza e i risultati si mantengono stabili. Ora proviamo provare insieme qualche piccolo esercizio in più per vedere se riusciamo a fare un passo avanti."
+      - "^start(Animation/Dialog animations/Affirmation/Pepper/FastGatherBothHandsOnChest_LeanRight_01)La tua performance è a un buon punto di partenza. Con un po’ di esercizio in più, possiamo raggiungere risultati ancora migliori."
+      - "^start(Animation/Moods/Neutral/Pepper/Chill)Va tutto bene finora. Adesso, proviamo qualcosa di leggermente diverso per alzare un po’ l’asticella."
     eye_color: 0xB0E0E6
     gesture: "Corpo stabile e mani vicino al tronco "
     voice_tone: 0.8
