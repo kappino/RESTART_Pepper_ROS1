@@ -4,6 +4,7 @@
 import random
 import rospy
 from game_base import BaseGame
+from pepper import Pepper
 
 class MemoryGame(BaseGame):
     def __init__(self, nome, pepper):
@@ -55,6 +56,33 @@ class MemoryGame(BaseGame):
 
         parole_ripetute = []
         print("\nRipetimi una parola alla volta:")
+        # Avvia il riconoscimento
+        asr.subscribe("MemoriaGioco")
+        asr.setLanguage("Italian")
+        asr.setVocabulary(words_to_say, True)  # solo parole previste, no parola nuova
+        parola = None
+        timeout = 10  # secondi massimi per parola
+
+        start_time = time.time()
+        while time.time() - start_time < timeout:
+            data = memory.getData("WordRecognized")
+            if data and isinstance(data, list) and len(data) >= 2:
+                recognized_word = data[0]
+                confidence = data[1]
+                if confidence > 0.4:
+                    parola = recognized_word.lower()
+                    print(f"Riconosciuto: {parola} (confidenza: {confidence:.2f})")
+                    break
+            rospy.sleep(0.5)
+
+        asr.unsubscribe("MemoriaGioco")
+
+        if parola:
+            parole_ripetute.append(parola)
+        else:
+            print("Nessuna parola riconosciuta.")
+            parole_ripetute.append("")
+
         for i in range(len(words_to_say)):
             parola = input("{i + 1}: ").strip().lower()
             parole_ripetute.append(parola)

@@ -17,6 +17,7 @@ class BaseGame:
         self.performance = "medio"
         self.behaviour_pub = None
         self.game_pub = None
+        self.pepper = Pepper.create("DA INSERIRE", 9559)
 
     def aggiorna_livello(self):
         if self.successo >= 80:
