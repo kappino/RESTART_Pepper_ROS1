@@ -37,23 +37,22 @@ class Pepper_commands():
     def __init__(self):
         rospy.init_node('Pepper_av_get', anonymous=True)
         #self.pub_check_audio_video = rospy.Publisher("verify_av", Bool, queue_size=10, latch=True) #This pub verify if pepper is online
-        rospy.Service('check_av_service', Check, self.handle_check_av)
+        
         self.pub_send_output_path = rospy.Publisher('path_av', audioVideo, queue_size=10, latch=True)#This pub send the path when it is ready
         rospy.Subscriber('index', Int32, self.start)
         rospy.sleep(2)
         self.pepper_test = Pepper.create(IP, PORT)
         if self.pepper_test is None:
-            self.pub_check_audio_video.publish(False)
             rospy.loginfo("Node 'Pepper_av_get' can not be initialized, pepper is not online.")
             exit()
         else:
-            self.pub_check_audio_video.publish(True)
             rospy.loginfo("Node 'Pepper_av_get' has been initialized.")
           # Stabilize for recording
-        time.sleep(2)
+        rospy.Service('check_av_service', Check, self.handle_check_av)
+        rospy.sleep(1)
 
     def handle_check_av(self, arg):
-        return CheckResponse(is_available=True)
+        return CheckResponse(is_available=(self.pepper_test is not None))
     
     def get_ssh_command(self, file_type, index):
         """
@@ -69,8 +68,8 @@ class Pepper_commands():
         file_extension = "wav" if file_type == "audio" else "avi"
         return [
             "sshpass", "-p", "pepperina2023", "scp",  # Using sshpass for password automation
-            "nao@{}:/home/nao/transfer/pepper_{}_{}.{}".format(IP,file_type, index, file_extension),  # Source Example: pepper_audio_0.wav or pepper_video_0.avi
-            "{}/{}/pepper_{}_{}.{}".format(parent_dir, file_type, file_type, index, file_extension)  # Destination
+            f"nao@{IP}:/home/nao/transfer/pepper_{file_type}_{index}.{file_extension}",  # Source Example: pepper_audio_0.wav or pepper_video_0.avi
+            f"{parent_dir}/{file_type}/pepper_{file_type}_{index}.{file_extension}"  # Destination
         ]
     
     def start_recording_session(self, index):  
@@ -80,7 +79,7 @@ class Pepper_commands():
         Args:
             pepper_test: Initialized Pepper instance
         """
-        self.pepper_test.record_audio_video("pepper_video_{}".format(index), "pepper_audio_{}".format(index))
+        self.pepper_test.record_audio_video(f"pepper_video_{index}", f"pepper_audio_{index}")
         
     def stop_recording_session(self):
         """
@@ -93,8 +92,7 @@ class Pepper_commands():
 
     def start(self, data):
         self.index = data.data
-        recording_thread = threading.Thread(target=self.start_recording_session, args=(self.index,))
-        recording_thread.daemon = True
+        recording_thread = threading.Thread(target=self.start_recording_session, args=(self.index,), daemon=True)
         self.pepper_test.lock_head()
         recording_thread.start()
         time.sleep(3)
@@ -108,8 +106,8 @@ class Pepper_commands():
         process_video.wait()  # Blocca finché il comando non termina
         process_audio.wait()
         msg = audioVideo()
-        msg.video_path = os.path.join(video_dir, "pepper_video_{}.avi".format(self.index))
-        msg.audio_path = os.path.join(audio_dir, "pepper_audio_{}.wav".format(self.index))
+        msg.video_path = os.path.join(video_dir, f"pepper_video_{self.index}.avi")
+        msg.audio_path = os.path.join(audio_dir, f"pepper_audio_{self.index}.wav")
         
         #output_file = self.merge_audio_video(self.index)
         self.pub_send_output_path.publish(msg)

@@ -1,83 +1,82 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+import warnings
+warnings.filterwarnings("ignore")
+import sys
+import os
+META_MODEL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ER_models/eeg_av/")
+MODEL_AV_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ER_models/av_er_restart/")
+sys.path.append(META_MODEL_PATH)
+sys.path.append(MODEL_AV_PATH)
 import rospy
 from std_msgs.msg import String
 from care_er_ave.msg import audioVideo, audio_video_eeg
-import re
-import subprocess
-import os
+from meta_model import meta_model
+from av_model import av_model
 
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-EEG_AV_MODEL_DIR = os.path.join(CURRENT_DIR, "ER_models/eeg_av/")
-PATH_MODEL_AUDIO_VIDEO = os.path.join(EEG_AV_MODEL_DIR, "audio_video_emotion_recognition_model/")
-PATH_MODEL_EEG = os.path.join(EEG_AV_MODEL_DIR, "EEG_model/")
-PATH_META_MODEL = os.path.join(EEG_AV_MODEL_DIR, "Meta_model/")
 
-'''PATH_MODEL_AUDIO_VIDEO = "/home/CARE-ER-AVE/audio_video_emotion_recognition_model/"
-PATH_MODEL_EEG = "/home/CARE-ER-AVE/EEG_model/"
-PATH_META_MODEL = "/home/CARE-ER-AVE/Meta_model/"'''
+MAP_EMOTION = {
+    "neutral": "neutral",
+    "happy" : "positive",
+    "angry" : "negative",
+    "sad" : "negative"
+}
+
 
 class emotion_recognition():
-    def __init__(self):
+    def __init__(self, salerno=False):
         rospy.init_node('Emotion_recognition', anonymous=True)
-        rospy.Subscriber('av', audioVideo, self.run_model_audio_video)
-        rospy.Subscriber('eeg', String, self.run_model_eeg)
-        rospy.Subscriber("av_eeg", audio_video_eeg, self.run_meta_model)
-        self.pub_emotion = rospy.Publisher('emotion', String, queue_size=10, latch=True)
+        self.salerno = salerno
+        if not self.salerno:
+            self.meta_model = meta_model()
+            rospy.Subscriber('av', audioVideo, self.run_model_audio_video)
+            rospy.Subscriber('eeg', String, self.run_model_eeg)
+            rospy.Subscriber("av_eeg", audio_video_eeg, self.run_meta_model)
+        if self.salerno:
+            self.av_model = av_model()
+            rospy.Subscriber('av', audioVideo, self.run_model_audio_video)
 
+        self.pub_emotion = rospy.Publisher('emotion', String, queue_size=10, latch=True)
         rospy.loginfo("Node Emotion recognition running")
         rospy.sleep(2)
-    
-    def run_model(self, path_model, cwd):
-        try:
-            process = subprocess.Popen(
-            args= path_model,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            cwd = cwd
-            )
-            stdout, stderr = process.communicate()
-            match = re.search(r'Emotion:\s*(\w+)', stdout)
-            if match:
-                emotion = match.group(1)
-                return emotion
-        except subprocess.CalledProcessError as e:
-            print("Errore nell'esecuzione del modello:")
-            print("STDOUT:\n", e.stdout)
-            print("STDERR:\n", e.stderr)
-            return None
-
 
     def run_model_audio_video(self, data):
         video_path = data.video_path
         audio_path = data.audio_path
-        cwd = PATH_MODEL_AUDIO_VIDEO
-        path_model = ['conda', 'run', '-n', 'myenv', 'python', "main.py", "--no_train", "--no_val", "--predict", "--video_file_path", video_path, "--audio_file_path", audio_path]
-        emotion = self.run_model(path_model=path_model, cwd=cwd)
+        if self.salerno:
+            emotion = self.av_model.emotion_recognition(video_path, audio_path)
+        else:
+            emotion = self.meta_model.av.predict(video_path, audio_path)
+            emotion = MAP_EMOTION[emotion.lower()]
         if emotion:
-            print(emotion)
+            print("AV: ", emotion)
             self.pub_emotion.publish(emotion)
 
-    def run_model_eeg(self, data):
-        eeg_path = data.data
-        cwd = PATH_MODEL_EEG
-        path_model = ['conda', 'run', '-n', 'myenv', 'python', "main.py", "--no_train", "--no_val", "--predict", "--eeg_data", eeg_path]
-        emotion = self.run_model(path_model=path_model, cwd=cwd)
-        if emotion:
-            print(emotion)
-            self.pub_emotion.publish(emotion)
+    def run_model_eeg(self,data):
+         eeg_path = data.data
+         emotion = self.meta_model.eeg.predict(eeg_path)
+         emotion = MAP_EMOTION[emotion.lower()]
+         print("EEG: ", emotion)
+         self.pub_emotion.publish(emotion)
 
     def run_meta_model(self, data):
         eeg_path = data.eeg
         video_path = data.video_path
         audio_path = data.audio_path
-        cwd = PATH_META_MODEL
-        path_model = ['conda', 'run', '-n', 'myenv', 'python', "main.py", "--no_train", "--no_val", "--predict", "--eeg_data", eeg_path, "--video_file_path", video_path, "--audio_file_path", audio_path]
-        emotion = self.run_model(path_model=path_model, cwd=cwd)
+        emotion = self.meta_model.predict(video_path, eeg_path, audio_path)
+        emotion = MAP_EMOTION[emotion.lower()]
         if emotion:
-            print(emotion)
+            print("META_MODEL: ", emotion)
             self.pub_emotion.publish(emotion)
 
+
 if __name__ == '__main__':
-    er = emotion_recognition()
+    er_node = emotion_recognition(salerno=False)
     rospy.spin()
+
+
+
+
+
+
