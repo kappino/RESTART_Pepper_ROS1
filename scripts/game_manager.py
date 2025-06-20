@@ -3,7 +3,6 @@
 
 import rospy
 from std_msgs.msg import String
-from pepper import Pepper
 from memory_game import MemoryGame  # Altri giochi da importare se servono
 
 IP = "host.docker.internal"
@@ -12,22 +11,17 @@ PORT = 9559
 class GameManager:
     def __init__(self):
         rospy.init_node("game_manager")
-        self.pepper = Pepper.create(IP, PORT)
+        rospy.Subscriber('/start_game', String, self.start_game)
 
-        if not self.pepper:
-            rospy.logerr("Connessione con Pepper fallita. Arresto.")
-            return
-
-        rospy.loginfo("Connessione a Pepper riuscita.")
-        self.game_name = rospy.get_param("~game_name", "memory_game")
-
+    
+    def start_game(self, data):
+        game_name = data.data
         # Istanziazione gioco
-        if self.game_name == "memory_game":
+        if game_name == "memory_game":
             self.game = MemoryGame("Gioco di memoria", pepper=self.pepper)
         else:
-            rospy.logwarn("Gioco '{self.game_name}' non riconosciuto.")
+            rospy.logwarn(f"Gioco '{game_name}' non riconosciuto.")
             return
-
         self.run_game()
 
     def run_game(self):
@@ -36,7 +30,7 @@ class GameManager:
         except KeyboardInterrupt:
             rospy.loginfo("Gioco interrotto manualmente.")
         except Exception as e:
-            rospy.logerr("Errore durante l'esecuzione del gioco: {e}")
+            rospy.logerr(f"Errore durante l'esecuzione del gioco: {e}")
         finally:
             rospy.signal_shutdown("Gioco terminato.")
 

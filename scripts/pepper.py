@@ -20,7 +20,7 @@ class Pepper:
         self.animated_speech = self.session.service("ALAnimatedSpeech")
         self.memory = self.session.service("ALMemory")
         self.leds = self.session.service("ALLeds")
-        #self.sr = self.session.service("ALSpeechRecognition")
+        self.asr = self.session.service("ALSpeechRecognition")
 
         self.joints = {
             'head': ['HeadYaw', 'HeadPitch'],
@@ -243,6 +243,16 @@ class Pepper:
         default_left = [1.0, 0.0, -1.5, -0.1, 0.0]
         default_right = [1.0, 0.0, 1.5, 0.1, 0.0]
         self.move_arms(default_left, default_right, speed)
+    
+    def asr_subscribe(self, name_topic, language, vocabulary, flag_vocabulary):
+        self.asr.pause(True)
+        self.asr.subscribe(name_topic)
+        self.asr.setLanguage(language)
+        self.asr.setVocabulary(vocabulary, flag_vocabulary)  # solo parole previste, no parola nuova
+        self.asr.pause(False)
+
+    def asr_unsubscribe(self, name_topic):
+        self.asr.unsubscribe(name_topic)
 
     
 
