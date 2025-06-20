@@ -1,15 +1,8 @@
 #!/usr/bin/env python                   
 # -*- coding: utf-8 -*-                                        
                                                                                                        
-import rospy
 import csv                                                                                                        
-import sys                  
 import time                                                        
-import random 
-from std_msgs.msg import Int32
-from std_msgs.msg import String
-from std_msgs.msg import Bool
-from datetime import date
 from datetime import datetime,timedelta
 
 # Globals variables
