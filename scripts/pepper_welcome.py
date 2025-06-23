@@ -87,7 +87,6 @@ class pepperWelcome:
         pazient_name = name + "_" + surname
         return pazient_name
     
-    import time
 
     def question_and_answer(self, question, options):
         self.pepper.pepper_say(question)
@@ -216,7 +215,7 @@ class pepperWelcome:
                 time.sleep(2)
 
             else:
-                answer3 = self.question_and_answer("rifletti, cominciano a cadere le foglie dagli alberi, quindi in che stagione siamo?",vocaboli_stagioni)
+                answer3 = self.question_and_answer("rifletti, cominciano a cadere le foglie dagli alberi, quindi in che stagione siamo?",season_vocables)
                 self.save_file_csv(self.pazient_name, "In che stagione ci troviamo?", answer3)
                 time.sleep(2)
 

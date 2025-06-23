@@ -6,19 +6,19 @@ from std_msgs.msg import String, Bool
 from pepper import Pepper
 import yaml
 import os
+import random
 
 #IP = "169.254.115.62"
 IP = "host.docker.internal"
 #IP = "localhost"
 PORT = 9559
 BEHAVIOUR_RULES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "behavior_rules.yaml")
-map_emotion = {
+'''map_emotion = {
     "neutral": "neutral",
     "happy" : "positive",
     "angry" : "negative",
     "sad" : "negative"
-}
-
+}'''
 performances = ["HIGH", "MEDIUM", "LOW"]
 emotions = ["NEUTRAL", "POSITIVE", "NEGATIVE"]
 
@@ -49,12 +49,14 @@ class controller():
         self.pub_terapia_attiva.publish(True)
         #msg = rospy.wait_for_message("emotion", String, timeout=None)
         #emotion = msg.data
-        emotion = "NEUTRAL"  
+        emotion = random.choice(emotions) #ONLY FOR TESTING, IF YOU HAVE PEPPER PLS UNCOMMENT THE TWO LINES ABOVE
         #print(self.behavior[emotion][performance])
         config = {
             'bodyLanguageMode': 'contextual',
         }
-        self.session_robot.pepper_animated_say(self.behavior[emotion][performance]['phrases'][0],config)
+        number = random.randint(0, 2)
+        self.session_robot.set_eye_color(self.behavior[emotion][performance]['eye_color'])
+        self.session_robot.pepper_animated_say(self.behavior[emotion][performance]['phrases'][number],config)
     
     def try_all_gestures(self):
         for emotion in emotions:
@@ -68,11 +70,6 @@ class controller():
                     self.session_robot.pepper_animated_say(phrase, config)
         print("All gestures tried successfully.")
     
-
-
-    
-
-
 
 if __name__ == '__main__':
     cont = controller()

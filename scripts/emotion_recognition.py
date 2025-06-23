@@ -17,10 +17,10 @@ from av_model import av_model
 
 
 MAP_EMOTION = {
-    "neutral": "neutral",
-    "happy" : "positive",
-    "angry" : "negative",
-    "sad" : "negative"
+    "neutral": "NEUTRAL",
+    "happy" : "POSITIVE",
+    "angry" : "NEGATIVE",
+    "sad" : "NEGATIVE"
 }
 
 

@@ -11,8 +11,8 @@ import os
 
 
 emotion_to_label = {
-  'angry': "negative", 'disgust': "negative", 'fear': "negative", 
-  'happy': "positive", 'neutral': "neutral", 'sad': "negative", 'surprise': "positive"}
+  'angry': "NEGATIVE", 'disgust': "NEGATIVE", 'fear': "NEGATIVE", 
+  'happy': "POSITIVE", 'NEUTRAL': "NEUTRAL", 'sad': "NEGATIVE", 'surprise': "POSITIVE"}
 
 class av_model():
     def __init__(self):
