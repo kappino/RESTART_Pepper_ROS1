@@ -48,14 +48,14 @@ class controller():
             print("\nPremi 1 per eseguire accoglienza e ROT")
             print("Altrimenti premi 0 per uscire")
             
-            scelta = input("La tua scelta: ")
+            choice = input("La tua scelta: ")
             
-            if scelta == '1':
+            if choice == '1':
                 from pepper_welcome import pepperWelcome
                 pepper_welcome = pepperWelcome(self.session_robot)
                 pepper_welcome.welcome()
                 pepper_welcome.ROT()
-            elif scelta == '0':
+            elif choice == '0':
                 break
             else:
                 print("Scelta non valida, riprova")
