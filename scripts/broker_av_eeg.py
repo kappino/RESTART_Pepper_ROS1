@@ -5,13 +5,12 @@ import rospy
 from std_msgs.msg import String, Bool, Int32
 from care_er_ave.msg import audioVideo, audio_video_eeg
 from care_er_ave.srv import Check
-import random
-import threading
+
 
 class broker_node():
     def __init__(self):
         rospy.init_node('broker_eeg_av', anonymous=True)
-        self.send_index = rospy.Publisher("index", Int32, queue_size=10)
+        self.send_index = rospy.Publisher("index", Int32, queue_size=1)
         rospy.sleep(3)
     
         # Inizializza flags e index
@@ -19,10 +18,10 @@ class broker_node():
         self.eeg_flag = False
         self.index = 0
         
-        rospy.Subscriber('terapia_attiva', Bool, self.attiva_terapia)
+        rospy.Subscriber('activate_therapy', Bool, self.activate_therapy)
         rospy.loginfo("Node 'broker_eeg_av' has been initialized.")
         
-    def attiva_terapia(self, data):
+    def activate_therapy(self, data):
         rospy.loginfo("messaggio ricevuto")
         if data.data:
             try:
@@ -50,15 +49,15 @@ class broker_node():
                 exit()
             
             elif self.av_flag and not self.eeg_flag: #av è disponibile mentre eeg no
-                self.pub_av = rospy.Publisher("av", audioVideo, queue_size=10)
+                self.pub_av = rospy.Publisher("av", audioVideo, queue_size=1)
                 self.work_only_av()
             
             elif self.eeg_flag and not self.av_flag: #eeg disponibile mentre av no
-                self.pub_eeg = rospy.Publisher("eeg", String, queue_size=10)
+                self.pub_eeg = rospy.Publisher("eeg", String, queue_size=1)
                 self.work_only_eeg()
             
             elif self.av_flag and self.eeg_flag: #entrambi disponibili
-                self.pub_av_eeg = rospy.Publisher("av_eeg", audio_video_eeg, queue_size=10)
+                self.pub_av_eeg = rospy.Publisher("av_eeg", audio_video_eeg, queue_size=1)
                 self.work_eeg_av()
 
     def work_only_eeg(self):

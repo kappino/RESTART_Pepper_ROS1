@@ -37,7 +37,7 @@ class emotion_recognition():
             self.av_model = av_model()
             rospy.Subscriber('av', audioVideo, self.run_model_audio_video)
 
-        self.pub_emotion = rospy.Publisher('emotion', String, queue_size=10, latch=True)
+        self.pub_emotion = rospy.Publisher('emotion', String, queue_size=1, latch=True)
         rospy.loginfo("Node Emotion recognition running")
         rospy.sleep(2)
 

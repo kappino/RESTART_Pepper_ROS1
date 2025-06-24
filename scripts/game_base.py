@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import rospy
-from std_msgs.msg import String
+from std_msgs.msg import String, Bool
 from pepper import Pepper
 
 
@@ -19,6 +19,7 @@ class BaseGame:
         self.game_pub = None
         self.pepper = Pepper.create("DA INSERIRE", 9559)
         self.pub_performance = rospy.Publisher('performance', String, queue_size=10)
+        self.pub_start_emotion = rospy.Publisher('activate_therapy', Bool, queue_size=10)
 
     def update_level(self):
         if self.success >= 80:

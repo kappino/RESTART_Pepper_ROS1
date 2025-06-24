@@ -47,6 +47,7 @@ class MemoryGame(BaseGame):
 
     def start(self):
         self.pepper.pepper_say("Benvenuto al gioco di memoria!")
+        self.pub_start_emotion.publish(True)
         rospy.sleep(1)
 
         while True:

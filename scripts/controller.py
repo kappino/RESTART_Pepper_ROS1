@@ -37,16 +37,32 @@ class controller():
         # per testare le frasi e i gesti associati.
         # self.try_all_gestures()
         # ------------------
-        self.pub_terapia_attiva = rospy.Publisher('terapia_attiva', Bool, queue_size=10, latch=True)
+        #self.pub_terapia_attiva = rospy.Publisher('terapia_attiva', Bool, queue_size=10, latch=True)
         rospy.sleep(2)
+        self.start_welcome_pepper()
         rospy.Subscriber('performance', String, self.start_action)
         rospy.loginfo("Node controller is online")
 
-    
+    def start_welcome_pepper(self):
+        while True:
+            print("\nPremi 1 per eseguire accoglienza e ROT")
+            print("Altrimenti premi 0 per uscire")
+            
+            scelta = input("La tua scelta: ")
+            
+            if scelta == '1':
+                from pepper_welcome import pepperWelcome
+                pepper_welcome = pepperWelcome(self.session_robot)
+                pepper_welcome.welcome()
+                pepper_welcome.ROT()
+            elif scelta == '0':
+                break
+            else:
+                print("Scelta non valida, riprova")
+
     def start_action(self, data):
         print("performance ricevuto")
         performance = data.data
-        self.pub_terapia_attiva.publish(True)
         #msg = rospy.wait_for_message("emotion", String, timeout=None)
         #emotion = msg.data
         emotion = random.choice(emotions) #ONLY FOR TESTING, IF YOU HAVE PEPPER PLS UNCOMMENT THE TWO LINES ABOVE

@@ -12,7 +12,7 @@ import os
 
 emotion_to_label = {
   'angry': "NEGATIVE", 'disgust': "NEGATIVE", 'fear': "NEGATIVE", 
-  'happy': "POSITIVE", 'NEUTRAL': "NEUTRAL", 'sad': "NEGATIVE", 'surprise': "POSITIVE"}
+  'happy': "POSITIVE", 'neutral': "NEUTRAL", 'sad': "NEGATIVE", 'surprise': "POSITIVE"}
 
 class av_model():
     def __init__(self):
@@ -26,7 +26,6 @@ class av_model():
             emotion, final_emotion_score, posture_type, final_emotion_score_with_sentiment = self.pose_image.classify_emotion(frame)
             emotions.append(emotion_to_label[emotion.lower()])
         sentiment = self.audioer.analyze_sentiment(audio_path)
-        print(sentiment)
         emotions.append(sentiment[0]["label"].lower())
         counts = Counter(emotions)
         return counts.most_common(1)[0][0]
