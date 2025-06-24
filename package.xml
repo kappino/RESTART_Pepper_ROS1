@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>care_er_ave</name>
+  <name>restart</name>
   <version>0.0.0</version>
-  <description>The care_er_ave package</description>
+  <description>The restart package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
