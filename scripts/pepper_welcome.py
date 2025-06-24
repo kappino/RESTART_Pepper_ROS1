@@ -1,7 +1,8 @@
 #!/usr/bin/env python                   
 # -*- coding: utf-8 -*-                                        
                                                                                                        
-import csv                                                                                                        
+import csv         
+import os                                                                                               
 import time                                                        
 from datetime import datetime,timedelta
 
@@ -75,10 +76,17 @@ class pepperWelcome:
     def __init__(self,pepper):
         self.pepper = pepper
 
+    import os
+
     def save_file_csv(self, file_name, question, answer):
-        with open("root/catkin_ws/config/"+file_name, mode='a') as file:
+        config_dir = os.path.expanduser("~/restart_ws/config/")
+        os.makedirs(config_dir, exist_ok=True)
+
+        file_path = os.path.join(config_dir, file_name)
+        with open(file_path, mode='a') as file:
             writer = csv.writer(file)
             writer.writerow([question, answer])
+
 
     def get_pazient_name(self):
         name = input("Insert pazient name: ").strip().lower()
@@ -113,8 +121,8 @@ class pepperWelcome:
             while time.time() - start_time < 10:
                 data = self.pepper.memory.getData("WordRecognized")
                 if data and isinstance(data, list) and len(data) >= 2 and data[1] > 0.5:
-                    risposta = data[0]
-                    print(f"[UTENTE] {risposta}")
+                    answer = data[0]
+                    print(f"[UTENTE] {answer}")
                     break
                 time.sleep(0.2)
 
@@ -165,7 +173,7 @@ class pepperWelcome:
         self.save_file_csv(self.pazient_name, "Chi ti ha accompagnato oggi?", answer3)
         time.sleep(2)
 
-        self.set_eye_color(white)
+        self.pepper.set_eye_color(white)
         self.save_file_csv(self.pazient_name, "Accoglienza", "Fine: " + time.strftime("%H:%M:%S"))
 
     def ROT(self):

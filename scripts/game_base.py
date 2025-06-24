@@ -17,7 +17,6 @@ class BaseGame:
         self.performance = "medio"
         self.behaviour_pub = None
         self.game_pub = None
-        self.pepper = Pepper.create("DA INSERIRE", 9559)
         self.pub_performance = rospy.Publisher('performance', String, queue_size=10)
         self.pub_start_emotion = rospy.Publisher('activate_therapy', Bool, queue_size=10)
 
@@ -43,7 +42,7 @@ class BaseGame:
             performance = "MEDIUM"
         else:
             performance = "LOW"
-        self.pub_performance(performance)
+        self.pub_performance.publish(performance)
         return performance
 
 

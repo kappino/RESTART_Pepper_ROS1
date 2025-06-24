@@ -7,10 +7,13 @@ from game_base import BaseGame
 from pepper import Pepper
 import time
 
+IP = "169.254.185.84"
+PORT = 9559
+
 class MemoryGame(BaseGame):
-    def __init__(self, name_game, pepper):
+    def __init__(self, name_game):
         super().__init__(name_game)
-        self.pepper = pepper  # istanza Pepper già connessa
+        self.pepper = Pepper.create(IP,PORT)  # istanza Pepper già connessa
         self.words_list = [
             "cane", "luna", "telefono", "bicicletta", "montagna",
             "finestra", "mare", "computer", "fiore", "tavolo",
@@ -23,12 +26,13 @@ class MemoryGame(BaseGame):
         success = (float(correct) / float(number_words)) * 100
         return success
     
-    def start_say_words(self):
+    def start_say_words(self, quantity):
         word = None
         timeout = 60  # secondi massimi per parola
         repeated_words = []
         start_time = time.time()
-        while time.time() - start_time < timeout:
+        while time.time() - start_time < timeout or repeated_words.__len__ == quantity :
+            self.pepper.memory.raiseEvent("WordRecognized", [])
             data = self.pepper.memory.getData("WordRecognized")
             if data and isinstance(data, list) and len(data) >= 2:
                 recognized_word = data[0]
@@ -39,9 +43,11 @@ class MemoryGame(BaseGame):
                         repeated_words.append(recognized_word)
                         print(f"Riconosciuto: {word} (confidenza: {confidence:.2f})")
                     else:
-                        self.pepper.say(f"Questa parola {word} già l'hai detta")
+                        self.pepper.pepper_say(f"Questa parola {word} già l'hai detta")
+                        self.pepper.memory.raiseEvent("WordRecognized", [])
                 else:
-                    self.pepper.say(f"Questa parola {word} non è corretta")
+                    self.pepper.pepper_say(f"Questa parola {word} non è corretta")
+                    self.pepper.memory.raiseEvent("WordRecognized", [])
         return repeated_words
 
 
@@ -82,18 +88,20 @@ class MemoryGame(BaseGame):
         print("\nRipetimi una parola alla volta:")
         #Start short term memory
         self.pepper.asr_subscribe("MemoriaGioco", "Italian", words_to_say, True)
-        repeated_words_short_term_memory = self.start_say_words()
+        repeated_words_short_term_memory = self.start_say_words(quantity=number_words)
         self.success_short_term_memory = self.calculate_success(repeated_words=repeated_words_short_term_memory, number_words=number_words)
+        print(self.success_short_term_memory)
         self.performance_short_term_memory = self.calculate_performance(self.success_short_term_memory)
         
         #Start drawing
         self.pepper.asr_unsubscribe("MemoriaGioco")
-        self.pepper.say("Divertiti disegnando")
-        rospy.sleep(300)
+        self.pepper.pepper_say("Adesso prenditi una pausa e divertiti disegnando")
+        rospy.sleep(3)
+        self.pepper.pepper_say("Adesso ripetimi le parole che ti ho elencato prima")
 
         #Start long term memory
         self.pepper.asr_subscribe("MemoriaGioco", "Italian", words_to_say, True)
-        repeated_words_long_term_memory = self.start_say_words()
+        repeated_words_long_term_memory = self.start_say_words(quantity=number_words)
         self.success_long_term_memory = self.calculate_success(repeated_words=repeated_words_long_term_memory, number_words=number_words)
         self.performance_long_term_memory = self.calculate_performance(self.success_long_term_memory)
         self.pepper.asr_unsubscribe("MemoriaGioco")

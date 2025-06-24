@@ -8,7 +8,7 @@ import yaml
 import os
 import random
 
-IP = "169.254.31.93"
+IP = "169.254.185.84"
 #IP = "host.docker.internal"
 #IP = "localhost"
 PORT = 9559

@@ -18,7 +18,7 @@ class GameManager:
         game_name = data.data
         # Istanziazione gioco
         if game_name == "memory_game":
-            self.game = MemoryGame("Gioco di memoria", pepper=self.pepper)
+            self.game = MemoryGame("Gioco di memoria")
         else:
             rospy.logwarn(f"Gioco '{game_name}' non riconosciuto.")
             return
@@ -36,3 +36,4 @@ class GameManager:
 
 if __name__ == "__main__":
     GameManager()
+    rospy.spin()
