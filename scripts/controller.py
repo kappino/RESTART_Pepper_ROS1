@@ -8,8 +8,8 @@ import yaml
 import os
 import random
 
-#IP = "169.254.115.62"
-IP = "host.docker.internal"
+IP = "169.254.31.93"
+#IP = "host.docker.internal"
 #IP = "localhost"
 PORT = 9559
 BEHAVIOUR_RULES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "behavior_rules.yaml")
