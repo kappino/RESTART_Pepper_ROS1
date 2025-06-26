@@ -164,7 +164,7 @@ class Pepper:
             print("[ERROR] Failed to configure speech service: {str(e)}".format(e))
             raise
 
-    def pepper_say(self, sentence):
+    def say(self, sentence):
         self.text_to_speech.say(sentence)
     def pepper_animated_say(self, sentence, config):
         self.animated_speech.say(sentence, config)
@@ -270,10 +270,10 @@ class Pepper:
                         repeated_words.append(recognized_word)
                         print(f"Riconosciuto: {word} (confidenza: {confidence:.2f})")
                     else:
-                        self.pepper_say(f"Questa parola {word} già l'hai detta")
+                        self.say(f"Questa parola {word} già l'hai detta")
                         self.memory.raiseEvent("WordRecognized", [])
                 else:
-                    self.pepper_say(f"Questa parola {word} non è corretta")
+                    self.say(f"Questa parola {word} non è corretta")
                     self.memory.raiseEvent("WordRecognized", [])
         return repeated_words
     

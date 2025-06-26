@@ -26,18 +26,12 @@ emotions = ["NEUTRAL", "POSITIVE", "NEGATIVE"]
 
 class controller():
     def __init__(self):
-        rospy.init_node('Controller_Pepper', anonymous=True)
+        rospy.init_node('Controller', anonymous=True)
         self.session_robot = Pepper.create(IP, PORT)
         with open(BEHAVIOUR_RULES, 'r') as file:
             self.behavior = yaml.safe_load(file)
         if self.session_robot is None:
             exit("Robot is not online")
-        # ------------------
-        # DEBUG: Abilita il test delle gestures decommentando la riga seguente.
-        # Questo farà eseguire tutte le combinazioni di emozioni e performance
-        # per testare le frasi e i gesti associati.
-        # self.try_all_gestures()
-        # ------------------
         #self.pub_terapia_attiva = rospy.Publisher('terapia_attiva', Bool, queue_size=10, latch=True)
         rospy.sleep(2)
         self.session_robot.start_welcome()
@@ -48,7 +42,7 @@ class controller():
     def handle_event(self, msg):
         if msg.type == "say":
             rospy.loginfo("Received say event: %s", msg.args)
-            self.session_robot.pepper_say(msg.args)
+            self.session_robot.say(msg.args)
 
         elif msg.type == "asr":
             try: 
@@ -99,19 +93,12 @@ class controller():
         }
         number = random.randint(0, 2)
         self.session_robot.set_eye_color(self.behavior[emotion][performance]['eye_color'])
-        self.session_robot.pepper_animated_say(self.behavior[emotion][performance]['phrases'][number],config)
+        phrase = self.behavior[emotion][performance]['phrases'][number]
+        gesture = self.behavior[emotion][performance]['gesture'][number]
+        phrase = gesture + phrase
+        print(f"Emotion: {emotion}, Performance: {performance}, Phrase: {phrase}")
+        self.session_robot.pepper_animated_say(phrase,config)
     
-    def try_all_gestures(self):
-        for emotion in emotions:
-            for performance in performances:
-                print("Trying gesture for emotion: {emotion}, performance: {performance}")
-                config = {
-                    'bodyLanguageMode': 'contextual',
-                }
-                for phrase in self.behavior[emotion][performance]['phrases']:
-                    print("Phrase: {phrase}")
-                    self.session_robot.pepper_animated_say(phrase, config)
-        print("All gestures tried successfully.")
     
 
 if __name__ == '__main__':
