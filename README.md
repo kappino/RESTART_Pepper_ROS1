@@ -34,13 +34,6 @@ Implementare una classe di terapie
 
 ## Architettura
 
-```mermaid
-graph LR
-    A[Game Module] -->|GamePerformance.msg| C[Adaptive Controller]
-    B[Emotion AI] -->|EmotionState.msg| C
-    C -->|RobotCommand.msg| D[Pepper Interface]
-```
-
 ![Image](images/diagram_restart.drawio.svg)
 
 ---
