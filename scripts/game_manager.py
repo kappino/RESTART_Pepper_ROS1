@@ -3,7 +3,7 @@
 
 import rospy
 from std_msgs.msg import String
-from memory_game import MemoryGame  # Altri giochi da importare se servono
+from memory_game_copy import MemoryGame  # Altri giochi da importare se servono
 
 IP = "host.docker.internal"
 PORT = 9559

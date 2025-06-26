@@ -53,6 +53,7 @@ add_message_files(
   audioVideo.msg
   audio_video_eeg.msg
   eeg.msg
+  Event.msg
 )
 
 ## Generate services in the 'srv' folder
