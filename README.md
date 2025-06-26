@@ -210,7 +210,7 @@ Dall’incrocio di questi due parametri (emozione e performance), viene determin
 
 ## Note Tecniche
 
-1. ## Requisiti
+1. ### Requisiti
 
 - ROS Noetic su Ubuntu 20.04
 - Python 3.8
