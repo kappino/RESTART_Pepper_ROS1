@@ -41,6 +41,8 @@ graph LR
     C -->|RobotCommand.msg| D[Pepper Interface]
 ```
 
+![Image](images/diagram_restart.drawio.svg)
+
 ---
 
 ## Specifiche Comportamentali
