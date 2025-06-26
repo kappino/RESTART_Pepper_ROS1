@@ -218,4 +218,3 @@ Dall’incrocio di questi due parametri (emozione e performance), viene determin
 - Pepper Robot con NAOqi SDK
 - [Anaconda](https://www.anaconda.com/) (per ambienti ML)
 
-```
