@@ -31,10 +31,13 @@ Implementare una classe di terapie
 ---
 
 ## Architettura
-
+### ROS Diagram
 ![Image](images/diagram_restart.drawio.svg)
 
 ---
+
+### Class Diagram
+![Image](images/class_diagram.svg)
 
 ## Specifiche Comportamentali
 
