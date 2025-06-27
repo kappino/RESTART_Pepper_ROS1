@@ -7,14 +7,12 @@ Sistema per l'interazione adattiva con pazienti anziani basato su performance co
 
 ## Indice
 
-* [Obiettivo](#-obiettivo)
-* [Architettura](#-architettura)
-* [Specifiche Comportamentali](#-specifiche-comportamentali)
-* [Flusso Operativo](#-flusso-operativo)
-* [Interfacce ROS](#-interfacce-ros)
-* [Implementazione](#-implementazione)
-* [Testing](#-testing)
-* [Roadmap](#-roadmap)
+* [Obiettivo](#obiettivo)
+* [Architettura](#architettura)
+* [Specifiche Comportamentali](#specifiche-comportamentali)
+* [Nodi ROS](#nodi-ros)
+* [Flusso Operativo Controller](#flusso-operativo-controller)
+* [Note Tecniche](#note-tecniche)
 
 ---
 
@@ -118,8 +116,6 @@ Dall’incrocio di questi due parametri (emozione e performance), viene determin
       -   L’intonazione della voce da utilizzare
 
 ---
-
-## Implementazione
 
 ### Struttura Package
 ```
