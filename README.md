@@ -202,7 +202,6 @@ Dall’incrocio di questi due parametri (emozione e performance), viene determin
 ```
 
 ---
-
 ## Note Tecniche
 
 1. ### Requisiti
@@ -211,5 +210,48 @@ Dall’incrocio di questi due parametri (emozione e performance), viene determin
 - Python 3.8
 - Emotiv Epocx (EEG)
 - Pepper Robot con NAOqi SDK
-- [Anaconda](https://www.anaconda.com/) (per ambienti ML)
+- [Anaconda](https://www.anaconda.com/) o [Miniconda](https://www.anaconda.com/docs/getting-started/miniconda/main) (per ambienti ML)
 
+2. ### Installazione
+Per avere un ambiente isolato e pulito da quello di default del sistema, si consiglia di utilizzare un ambiente conda.
+
+2.1 Eseguire il file shell *setup_conda_ros.sh*
+```shell
+chmod +x ./setup_conda_ros.sh
+./setup_conda_ros.sh
+```
+2.2 Attivare l'ambiente "restart"
+```shell
+conda activate restart
+```
+2.3 Installare i pacchetti per eseguire tutto il sistema restart.
+```shell
+pip install qi
+
+pip install torch==2.2.1 torchvision==0.17.1 torchaudio==2.2.1 --index-url https://download.pytorch.org/whl/cu118
+
+pip install tqdm
+
+pip install scikit-learn
+
+pip install opencv-contrib-python==4.11.0.86
+
+pip install moviepy
+
+pip install librosa==0.9.2
+
+pip install --no-deps facenet-pytorch==2.6.0
+
+pip install mediapipe
+
+pip install --no-deps fer==22.5.1
+
+pip install tensorflow
+
+pip install transformers
+
+pip install speechrecognition
+
+pip install hidapi==0.14.0
+
+pip install pycryptodome==3.23.0
