@@ -4,13 +4,13 @@
 import rospy
 import json
 from std_msgs.msg import String, Bool
-from restart.msg import Event
+#from restart.msg import Event
 from pepper_copy import Pepper
 import yaml
 import os
 import random
 
-IP = "169.254.250.162"
+IP = "172.20.10.14"
 #IP = "host.docker.internal"
 #IP = "localhost"
 PORT = 9559

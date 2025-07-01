@@ -286,7 +286,7 @@ class Pepper:
             
             if choice == '1':
                 from pepper_welcome import pepperWelcome
-                pepper_welcome = pepperWelcome(self.session_robot)
+                pepper_welcome = pepperWelcome(self.session)
                 pepper_welcome.welcome()
                 pepper_welcome.ROT()
             elif choice == '0':

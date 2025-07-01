@@ -6,7 +6,7 @@ import random
 import rospy
 from game_base_copy import BaseGame
 from std_msgs.msg import String, Bool
-from restart.msg import Event
+from RESTART_Pepper_ROS1.msg import Event
 import time
 
 class MemoryGame(BaseGame):
@@ -25,9 +25,6 @@ class MemoryGame(BaseGame):
         success = (float(correct) / float(number_words)) * 100
         return success
     
-
-
-
     def start(self):
         self.pub_event.publish(Event(type="say", args="Benvenuto al gioco di memoria!"))
         #self.pepper.pepper_say("Benvenuto al gioco di memoria!")

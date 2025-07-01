@@ -97,14 +97,14 @@ class pepperWelcome:
     
 
     def question_and_answer(self, question, options):
-        self.pepper.pepper_say(question)
+        self.pepper.say(question)
 
         attempts = 2
         answer = None
 
         for attempt in range(attempts):
             if attempt == 1:
-                self.pepper.pepper_say("Non ho capito. Puoi ripetere?")
+                self.pepper.say("Non ho capito. Puoi ripetere?")
 
             # Configura il riconoscimento vocale
             self.pepper.asr.pause(True)
@@ -129,11 +129,11 @@ class pepperWelcome:
             self.pepper.asr.unsubscribe("SessioneCognitiva")
 
             if answer:
-                self.pepper.pepper_say("Hai detto " + answer)
+                self.pepper.say("Hai detto " + answer)
                 break
 
         if not answer:
-            self.pepper.pepper_say("Non ho capito neanche stavolta.")
+            self.pepper.say("Non ho capito neanche stavolta.")
             answer = "nessuna"
 
         self.pepper.memory.raiseEvent("WordRecognized", [])  # reset dell'evento
@@ -156,7 +156,7 @@ class pepperWelcome:
 
         self.save_file_csv(self.pazient_name, "Accoglienza", "Inizio: " + time.strftime("%H:%M:%S"))
 
-        self.pepper.pepper_say("Ciao io sono Pepper")
+        self.pepper.say("Ciao io sono Pepper")
         self.pepper.set_eye_color(green)
         time.sleep(2)
 
